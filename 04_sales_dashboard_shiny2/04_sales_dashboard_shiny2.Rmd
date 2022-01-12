@@ -2,7 +2,7 @@
 title: "Sales Dashboard"
 output: 
   flexdashboard::flex_dashboard:
-    orientation: columns
+    orientation: rows
     vertical_layout: fill
 runtime: shiny
 ---
@@ -11,6 +11,7 @@ runtime: shiny
 library(flexdashboard)
 library(shiny)
 library(shinyWidgets)
+library(shinyjs)
 
 # Core
 library(tidyverse)
@@ -59,6 +60,8 @@ Column {.sidebar}
 ---------------------------------------------------------------
 
 ```{r}
+
+useShinyjs(rmd = TRUE)
 dateRangeInput(
   inputId = "date_range", 
   label   = h4("Date Range"),
@@ -118,6 +121,16 @@ observeEvent(eventExpr = input$reset, handlerExpr = {
     start   = min(processed_data_tbl$order.date), 
     end     = max(processed_data_tbl$order.date))
   
+  updateRadioGroupButtons(
+      session  = session,
+      inputId  = "time_unit",
+      selected = "month")
+  
+  shinyjs::delay(ms = 300, expr = 
+        {shinyjs::click(id = "apply")})
+  
+  
+  
 })
 
 # renderPrint(input$date_range)
@@ -147,9 +160,70 @@ ignoreNULL = FALSE
 
 )
 ```
+Row {data-height=150}
+---------------------------------------------------------------
+```{r}
+summary_values_tbl <- reactive({
+ processed_data_filtered_tbl() %>%
+    summarize(
+        health_metric = n_distinct(order.id),
+        wealth_metric = sum(extended_price),
+        wise_metric   = (sum(str_detect(category_1,"Mountain"))/sum(str_detect(category_1,"Road")) +                          0.00001) %>% round(1)
+    ) %>%
+    mutate(
+        health_metric = health_metric %>% scales::number(big.mark=","),
+        wealth_metric = wealth_metric %>% scales::dollar(scale = 1e-6, accuracy = 0.1, suffix = "M")
+    )   
+    
+})
+
+#renderPrint(summary_values_tbl())
+
+```
+
+### Healthy
+
+```{r}
+renderValueBox({
+ valueBox(
+     value   = summary_values_tbl()$health_metric,
+     caption = "Orders",
+     icon    = "fa-heartbeat",
+     color   = "success")   
+
+})
+
+```
 
 
-Column {data-width=1000}
+### Wealthy
+
+```{r}
+renderValueBox({
+    valueBox(
+        value   = summary_values_tbl()$wealth_metric,
+        caption = "Sales",
+        icon    = "fa-money-check-alt",
+        color   = "primary")
+
+})
+```
+
+
+### Wise
+
+```{r}
+renderValueBox({
+    valueBox(
+        value   = summary_values_tbl()$wise_metric,
+        caption = "Ratio, Mountain to Road",
+        icon    = "fa-brain",
+        color   = "info")
+})
+```
+
+
+Row {data-height=850}
 ---------------------------------------------------------------
 
 ### By State
@@ -202,9 +276,8 @@ plotlyOutput(outputId = "plotly_1")
 
 ```
 
-Column {data-width=600}
-----------------------------------------------------------------------------
-### Over Time
+
+### OverTime
 
 ```{r}
 shinyWidgets::radioGroupButtons(
