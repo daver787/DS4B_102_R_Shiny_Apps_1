@@ -27,7 +27,7 @@ dbDisconnect(con)
 
 # 2.0 PREPROCESS DATA ----
 
-bikes_tbl %>%
+train_tbl <- bikes_tbl %>%
     
     # 2.1 Separate Description Column ----
     separate(description, 
@@ -95,11 +95,34 @@ bikes_tbl %>%
 
 # 3.1 Create Model ----
 
+train_tbl <- train_tbl %>%
+    select(-c(bike.id,model,description,model_tier)) %>%
+    select(price,everything())
+
+
+train_tbl
+
+set.seed(1234)
+
+model_xgboost <- boost_tree(
+           mode           = "regression",
+           mtry           = 30,
+           learn_rate     = 0.25,
+           tree_depth     = 7) %>%
+    set_engine("xgboost") %>%
+    fit(price ~., data =train_tbl)
+
 # 3.2 Test Model ----
+
+model_xgboost %>%
+    predict(new_data = train_tbl %>% select(-price))
+
 
 # 3.3 Save Model ----
 
+write_rds(model_xgboost, file = "00_models/model_xgboost.rds")
 
+read_rds(file = "00_models/model_xgboost.rds")
 
 
 # 4.0 MODULARIZE PREPROCESSING CODE ----
