@@ -238,18 +238,56 @@ dump(c("separate_bike_model", "separate_bike_description"),
 # 5.0 USER INPUT & PREDICTION ----
 
 # 5.1 Inputs ----
-bike_model <- "Jekyll Aluminum 1 Black"
+bike_model <- "Jekyll Aluminum 1"
 category_1 <- "Mountain"
 category_2 <- "Over Mountain"
 frame_material <- "Aluminum"
 
 # 5.2 Make Prediction ----
+new_bike_tbl <- tibble(
+    model          = bike_model,
+    category_1     = category_1,
+    category_2     = category_2,
+    frame_material = frame_material
+) %>%
+    separate_bike_model() 
 
+new_bike_tbl %>%
+    predict(model_xgboost, new_data = .)
 
 # 6.0 MODULARIZE NEW BIKE PREDICTION ----
 
 # 6.1 generate_new_bike() Function ----  
 
+generate_new_bike <- function(bike_model, category_1, category_2, frame_material, .ml_model){
+    new_bike_tbl <- tibble(
+        model          = bike_model,
+        category_1     = category_1,
+        category_2     = category_2,
+        frame_material = frame_material
+    ) %>%
+        separate_bike_model() 
+    
+        predict(model_xgboost, new_data = new_bike_tbl) %>%
+            bind_cols(new_bike_tbl) %>%
+            rename(price = .pred)
+    
+}
+
+new_bike_tbl <- generate_new_bike(
+    bike_model     = "Jekyll Aluminum Black Inc.",
+    category_1     = "Mountain",
+    category_2     = "Over Mountain",
+    frame_material = "Aluminum",
+    .ml_model      = model_xgboost
+)
+
+
+bikes_tbl %>%
+    separate_bike_model() %>%
+    separate_bike_description() %>%
+    bind_rows(new_bike_tbl) %>%
+    tail()
 
 
 # 6.2 Test ----
@@ -265,9 +303,18 @@ new_bike_tbl <- generate_new_bike(
 new_bike_tbl
 
 
-
 # 7.0 OUTPUT TABLE ----
 
+format_table <- function(new_bike_tbl){
+    
+    new_bike_tbl %>%
+        mutate(price = scales::dollar(price,accuracy = 1)) %>%
+        gather(key = "New Model Attribute", value = "value", -model, factor_key = TRUE) %>%
+        spread(key = model, value = value)  
+}
+
+
+new_bike_tbl %>% format_table()
 
 
 # 8.0 OUTPUT PLOT PRODUCTS ----
