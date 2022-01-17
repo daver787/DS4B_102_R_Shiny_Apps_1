@@ -321,12 +321,43 @@ new_bike_tbl %>% format_table()
 
 # 8.1 bind_bike_predictions() function ----
 
+bind_bike_predictions <- function(bikes_tbl, new_bikes_tbl){
+    
+    bikes_tbl %>%
+    separate_bike_description() %>%
+    mutate(estimate = "Actual") %>%
+    bind_rows(
+        new_bike_tbl %>% mutate(estimate ="Prediction")
+    ) %>%
+    select(estimate, model, category_1, category_2, frame_material, price) 
+} 
+
+bind_bike_predictions(bikes_tbl, new_bike_tbl) %>% tail()    
 
 # 8.2 plot_bike_prediction() function ----
+
+g <- bind_bike_predictions(bikes_tbl, new_bikes_tbl) %>%
+    mutate(category_2 =fct_reorder(category_2, price)) %>%
+    mutate(label_text = str_glue("Unit Price: {scales::dollar(price,accuracy = 1)}
+                                  Model : {model}
+                                  Bike Type: {category_1}
+                                  Bike Family: {category_2}
+                                  Frame Material: {frame_material}")) %>%
+    ggplot(aes(category_2, price, color = estimate)) +
+    geom_jitter(aes(text = label_text), width = 0.1, alpha = 0.5) +
+    coord_flip() 
+
+
+ggplotly(g, tooltip = "text")
+
+
+
+
+
 
 
 # 8.3 Save functions ----
 
 dump(c("generate_new_bike", "format_table", "bind_bike_prediction", "plot_bike_prediction"), 
-     file = "00_scripts/02_make_predictions.R")
+     file = "00_scripts/03_make_predictions.R")
     
