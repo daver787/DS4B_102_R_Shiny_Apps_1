@@ -336,28 +336,41 @@ bind_bike_predictions(bikes_tbl, new_bike_tbl) %>% tail()
 
 # 8.2 plot_bike_prediction() function ----
 
-g <- bind_bike_predictions(bikes_tbl, new_bikes_tbl) %>%
-    mutate(category_2 =fct_reorder(category_2, price)) %>%
-    mutate(label_text = str_glue("Unit Price: {scales::dollar(price,accuracy = 1)}
+plot_bike_predictions <- function(data, interactive = TRUE){
+    
+    g <- data %>%
+        mutate(category_2 =fct_reorder(category_2, price)) %>%
+        mutate(label_text = str_glue("Unit Price: {scales::dollar(price,accuracy = 1)}
                                   Model : {model}
                                   Bike Type: {category_1}
                                   Bike Family: {category_2}
                                   Frame Material: {frame_material}")) %>%
-    ggplot(aes(category_2, price, color = estimate)) +
-    geom_jitter(aes(text = label_text), width = 0.1, alpha = 0.5) +
-    coord_flip() 
+        ggplot(aes(category_2, price, color = estimate)) +
+        geom_violin() +
+        geom_jitter(aes(text = label_text), width = 0.1, alpha = 0.5) +
+        facet_wrap(vars(frame_material)) +
+        coord_flip() +
+        scale_y_log10(labels = scales::dollar_format(accuracy = 1)) +
+        scale_color_tq() +
+        theme_tq() +
+        theme(strip.text.x = element_text(margin = margin(5, 5, 5, 5))) +
+        labs(title = "", x = "", y = "Log Scale")
+    
+    
+    if (interactive){
+       return(ggplotly(g, tooltip = "text"))
+    } else{
+        return(g)
+    }
+}
 
 
-ggplotly(g, tooltip = "text")
-
-
-
-
-
+bind_bike_predictions(bikes_tbl, new_bikes_tbl) %>%
+    plot_bike_predictions(interactive = TRUE)
 
 
 # 8.3 Save functions ----
 
-dump(c("generate_new_bike", "format_table", "bind_bike_prediction", "plot_bike_prediction"), 
+dump(c("generate_new_bike", "format_table", "bind_bike_predictions", "plot_bike_predictions"), 
      file = "00_scripts/03_make_predictions.R")
     
