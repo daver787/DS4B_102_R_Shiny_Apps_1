@@ -1,0 +1,76 @@
+---
+title: "Price Prediction App"
+output: 
+  flexdashboard::flex_dashboard:
+    orientation: columns
+    vertical_layout: fill
+---
+
+```{r setup, include=FALSE}
+
+# 1.0 Libraries -----
+
+#App
+library(flexdashboard)
+
+#Core
+library(tidyverse)
+library(tidyquant)
+
+#Visualizations
+library(plotly)
+
+
+#Modeling
+library(parsnip)
+
+
+#Database
+library(odbc)
+library(RSQLite)
+
+
+# 2.0 Data ----
+con <- dbConnect(RSQLite::SQLite(), "../00_data/bikes_database.db")
+#con <- dbConnect(RSQLite::SQLite(), "00_data/bikes_database.db")
+#dbListTables(conn = con)
+bikes_tbl <- tbl(con, "bikes") %>% collect()
+dbDisconnect(con)
+
+#Scripts
+source("../00_scripts/02_process_data.R")
+source("../00_scripts/03_make_predictions.R")
+
+#Model
+model_xgboost <- read_rds(file = "../00_models/model_xgboost.rds")
+
+
+
+```
+Column{.sidebar}
+-----------------------------------------------------------------------
+
+Space for Inputs
+
+
+
+Column {data-width=650}
+-----------------------------------------------------------------------
+
+### Price Prediction vs Product Portfolio
+
+```{r}
+
+```
+
+Column {data-width=350}
+-----------------------------------------------------------------------
+
+### Price Prediction Used These Features
+
+```{r}
+
+```
+
+
+
