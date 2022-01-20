@@ -58,9 +58,18 @@ Column {data-width=650}
 -----------------------------------------------------------------------
 
 ### Price Prediction vs Product Portfolio
+```{r}
+new_bike_tbl <- generate_new_bike(
+    bike_model     =  'Jekyll Al 1 Black Inc.',
+    category_1     = 'Mountain',
+    category_2     = 'Over Mountain',
+    frame_material = 'Aluminum',
+    .ml_model      = model_xgboost)
+```
 
 ```{r}
-
+bind_bike_predictions(bikes_tbl, new_bike_tbl) %>%
+    plot_bike_predictions(interactive = TRUE)
 ```
 
 Column {data-width=350}
@@ -69,7 +78,7 @@ Column {data-width=350}
 ### Price Prediction Used These Features
 
 ```{r}
-
+new_bike_tbl %>% format_table()
 ```
 
 
