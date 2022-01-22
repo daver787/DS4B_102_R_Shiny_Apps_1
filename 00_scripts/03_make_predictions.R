@@ -8,7 +8,7 @@ function(bike_model, category_1, category_2, frame_material, .ml_model){
     ) %>%
         separate_bike_model() 
     
-        predict(model_xgboost, new_data = new_bike_tbl) %>%
+        predict(.ml_model, new_data = new_bike_tbl) %>%
             bind_cols(new_bike_tbl) %>%
             rename(price = .pred)
     
@@ -22,7 +22,7 @@ function(new_bike_tbl){
         spread(key = model, value = value)  
 }
 bind_bike_predictions <-
-function(bikes_tbl, new_bikes_tbl){
+function(bikes_tbl, new_bike_tbl){
     
     bikes_tbl %>%
     separate_bike_description() %>%
