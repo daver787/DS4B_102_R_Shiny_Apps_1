@@ -42,10 +42,15 @@ dbDisconnect(con)
 
 # Scripts
 source("../00_scripts/02_process_data.R")
+#source("00_scripts/02_process_data.R")
 source("../00_scripts/03_make_predictions.R")
+
+#source("00_scripts/03_make_predictions.R")
 
 # Model
 model_xgboost <- read_rds("../00_models/model_xgboost.rds")
+
+#model_xgboost <- read_rds("00_models/model_xgboost.rds")
 ```
 
 Column {.sidebar}
@@ -64,7 +69,11 @@ category_hierarchy_tbl <- bikes_tbl %>%
     distinct(category_1,category_2)
 
 
-
+pickerInput(inputId  = "picker_category_2",
+            label    = h4("Bike Family"),
+            choices  = category_hierarchy_tbl$category_2,
+            selected = "Over Mountain"
+            )
 
 #Bike Type (Category 1) ----
 br()
@@ -80,6 +89,8 @@ actionButton("reset", label = "Reset", icon = icon("sync"))
 observeEvent(eventExpr = input$reset, handlerExpr = {
   
   updateTextInput(session = session, inputId = "text_bike_model", value = "Jekyll Al 1 Black Inc.")
+    
+  updatePickerInput(session = session, inputId = "picker_category_2", selected = "Over Mountain")    
   
   delay(ms = 300, expr = {
     click(id = "apply")
@@ -99,7 +110,7 @@ new_bike_tbl <- eventReactive(eventExpr = input$apply, valueExpr = {
   generate_new_bike(
     bike_model = input$text_bike_model, 
     category_1 = "Mountain", 
-    category_2 = "Over Mountain", 
+    category_2 = input$picker_category_2, 
     frame_material = "Aluminum", 
     .ml_model = model_xgboost)
   
