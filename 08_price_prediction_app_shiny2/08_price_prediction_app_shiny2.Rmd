@@ -69,6 +69,11 @@ category_hierarchy_tbl <- bikes_tbl %>%
     distinct(category_1,category_2)
 
 
+frame_material_tbl <- bikes_tbl %>%
+    separate_bike_description(keep_description_column = TRUE, append = FALSE) %>%
+    distinct(frame_material)
+
+
 pickerInput(inputId  = "picker_category_2",
             label    = h4("Bike Family"),
             choices  = category_hierarchy_tbl$category_2,
@@ -76,11 +81,28 @@ pickerInput(inputId  = "picker_category_2",
             )
 
 #Bike Type (Category 1) ----
+h4("Bike Type")
+bike_type <- reactive({
+    category_hierarchy_tbl %>%
+        filter(category_2 ==input$picker_category_2)%>%
+        pull(category_1)
+})
+
+output$bike_type <- renderText(bike_type())
+
+textOutput(outputId ="bike_type") %>% em() %>% strong()
+
 br()
 hr()
 br()
 
 #Frame Material ----
+br()
+pickerInput(inputId  = "picker_frame_material",
+            label    = h4("Frame Material"),
+            choices  = frame_material_tbl$frame_material,
+            selected = "Aluminum"
+            )
 
 actionButton(inputId = "apply", label = "Apply", icon = icon(name = "play", lib = "font-awesome"))
 
@@ -91,6 +113,8 @@ observeEvent(eventExpr = input$reset, handlerExpr = {
   updateTextInput(session = session, inputId = "text_bike_model", value = "Jekyll Al 1 Black Inc.")
     
   updatePickerInput(session = session, inputId = "picker_category_2", selected = "Over Mountain")    
+  
+  updatePickerInput(session = session, inputId = "picker_frame_material", selected = "Aluminum") 
   
   delay(ms = 300, expr = {
     click(id = "apply")
@@ -109,9 +133,9 @@ new_bike_tbl <- eventReactive(eventExpr = input$apply, valueExpr = {
   
   generate_new_bike(
     bike_model = input$text_bike_model, 
-    category_1 = "Mountain", 
+    category_1 = bike_type(), 
     category_2 = input$picker_category_2, 
-    frame_material = "Aluminum", 
+    frame_material = input$picker_frame_material, 
     .ml_model = model_xgboost)
   
 }, ignoreNULL = FALSE)
