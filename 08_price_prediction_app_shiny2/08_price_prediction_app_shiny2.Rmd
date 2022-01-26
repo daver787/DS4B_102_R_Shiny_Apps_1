@@ -94,10 +94,8 @@ textOutput(outputId ="bike_type") %>% em() %>% strong()
 
 br()
 hr()
-br()
 
 #Frame Material ----
-br()
 pickerInput(inputId  = "picker_frame_material",
             label    = h4("Frame Material"),
             choices  = frame_material_tbl$frame_material,
