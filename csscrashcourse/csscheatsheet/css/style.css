@@ -17,6 +17,24 @@ body{
 	margin:0; 
 }
 
+a{
+	text-decoration: none;
+	color:#000;
+}
+
+a:hover{
+	color:red;
+}
+
+
+a:active{
+	color:green;
+}
+
+a:visited{
+	color:black;
+}
+
 .container{
 	width:80%;
 	margin:auto;
@@ -52,6 +70,42 @@ body{
 
 	margin-top:20px;
 	margin:20px 0;
+}
 
+.box-1 h1{
+	font-family:Tahoma;
+	font-weight:800;
+	font-style:italic;
+	text-decoration: underline;
+	text-transform:uppercase;
+	letter-spacing: 0.2em;
+	word-spacing: 1em;
+}
 
+.box-2{
+	border:3px dotted #ccc;
+	padding:20px;
+	margin:20px 0;
+}
+
+.categories{
+	border:1px #ccc solid;
+	padding:10px;
+	border-radius:15px;
+}
+
+.categories h2{
+	text-align: center
+}
+
+.categories ul{
+	padding:0;
+	padding-left:20px;
+	list-style:square;
+}
+
+.categories li{
+	padding-bottom: 8px;
+	border-bottom: dotted 1px #333;
+	list-style-image: url('../images/check.jpg')
 }
