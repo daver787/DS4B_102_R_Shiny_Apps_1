@@ -31,9 +31,7 @@ a:active{
 	color:green;
 }
 
-a:visited{
-	color:black;
-}
+
 
 .container{
 	width:80%;
@@ -42,7 +40,17 @@ a:visited{
 
 }
 
+.button{
+	background-color: #333;
+	color:#fff;
+	padding:10px 15px;
+	border:none;
+}
 
+.button:hover{
+	background:red;
+	color:#fff;
+}
 
 .box-1{
 	background-color:#333333;
@@ -109,3 +117,24 @@ a:visited{
 	border-bottom: dotted 1px #333;
 	list-style-image: url('../images/check.jpg')
 }
+
+.my-form{
+padding:20px;
+
+}
+
+.my-form .form-group{
+	padding-bottom: 15px;
+}
+
+
+.my-form label{
+	display:block;
+}
+
+
+.my-form input[type="text"], .my-form textarea{
+	padding:8px;
+	width:100%;
+}
+
