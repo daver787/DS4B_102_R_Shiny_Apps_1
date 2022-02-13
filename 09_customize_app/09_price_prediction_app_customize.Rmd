@@ -4,6 +4,8 @@ output:
   flexdashboard::flex_dashboard:
     orientation: columns
     vertical_layout: fill
+    css: css/styles-default.css
+    logo: img/business-science-logo.png
 runtime: shiny
 ---
 
