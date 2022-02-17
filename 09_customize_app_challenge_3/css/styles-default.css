@@ -1,18 +1,8 @@
 
 /* FONTS */
-@font-face {
-
-font-family: 'KlavikaMedium';
-
-src: url('https://www.cannondale.com/~/media/Fonts/Cannondale/Klavika/KlavikaWebBasicMedium.woff') format('woff')
-
-}
-
-@font-face {
-font-family: 'KlavikaWebMediumCond';
-
-src: url('https://www.cannondale.com/~/media/Fonts/Cannondale/Klavika/Condensed/KlavikaWebMediumCond.woff') format('woff')
-
+@font-face{
+    font-family:"klavika-regular-italic";
+    src:url("fonts/klavika-regular-italic.woff") format('woff');
 }
 
 .navbar-inverse .navbar-brand {
@@ -20,16 +10,16 @@ src: url('https://www.cannondale.com/~/media/Fonts/Cannondale/Klavika/Condensed/
 }
 
 .navbar-brand {
-    font-family: "KlavikaMediumCond", sans-serif;
+    font-family: 'klavika-regular-italic', sans-serif;
 }
 
 h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
-    font-family: "KlavikaMediumCond",sans-serif;
+    font-family: 'klavika-regular-italic',sans-serif;
     color: #77bb00
 }
 
 body {
-    font-family: "KlavikaMedium", sans-serif;
+    font-family: 'klavika-regular-italic', sans-serif;
     color: #000000
 }
 
@@ -40,8 +30,8 @@ body {
 }
 
 .navbar-logo {
-    width: 150px;
-    height:50px;
+    width: 200px;
+    height:50px
 }
 
 
