@@ -2,7 +2,7 @@
 /* FONTS */
 @font-face{
     font-family:"klavika-regular-italic";
-    src:url("fonts/klavika-regular-italic.woff") format('woff');
+    src:url("klavika-regular-italic.woff");
 }
 
 .navbar-inverse .navbar-brand {
