@@ -1,17 +1,16 @@
 
 /* FONTS */
 @font-face{
+    font-family:"klavika-medium";
+    src:url("klavika-medium.woff") format('woff');
+}
+
+@font-face{
     font-family:"klavika-regular-italic";
-    src:url("klavika-regular-italic.woff");
+    src:url("klavika-regular-italic.woff") format('woff');
 }
 
-.navbar-inverse .navbar-brand {
-    color: #77bb00;
-}
 
-.navbar-brand {
-    font-family: 'klavika-regular-italic', sans-serif;
-}
 
 h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
     font-family: 'klavika-regular-italic',sans-serif;
@@ -19,20 +18,29 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 }
 
 body {
-    font-family: 'klavika-regular-italic', sans-serif;
-    color: #000000
+    font-family: 'klavika-medium', sans-serif;
+    text-transform: uppercase;
+    color: #000000;
+    font-size:16px;
 }
 
 /* NAVBAR */
+
+.navbar-brand{
+    color:#77bb00 !important;
+}
+
 .navbar-inverse {
+    font-family: 'klavika-regular-italic', sans-serif;
     background-color: #ffffff;
     border-color: #000000;
 }
 
+
 .navbar-logo {
-    width: 200px;
-    height:50px
+    height:35px
 }
+
 
 
 /* SIDEBAR */
@@ -49,25 +57,25 @@ body {
 
 .btn-default:focus,.btn-default.focus {
     color: #ffffff;
-    background-color:#000000;
+    background-color:#77bb00;
     border-color: #77bb00
 }
 
 .btn-default:hover {
     color: #ffffff;
-    background-color: #000000;
+    background-color: #77bb00;
     border-color: #77bb00
 }
 
 .btn-default:active,.btn-default.active,.open>.dropdown-toggle.btn-default {
     color: #ffffff;
-    background-color: #000000;
+    background-color: #77bb00;
     border-color: #77bb00
 }
 
 .btn-default:active:hover,.btn-default.active:hover,.open>.dropdown-toggle.btn-default:hover,.btn-default:active:focus,.btn-default.active:focus,.open>.dropdown-toggle.btn-default:focus,.btn-default:active.focus,.btn-default.active.focus,.open>.dropdown-toggle.btn-default.focus {
     color: #ffffff;
-    background-color: #000000;
+    background-color: #77bb00;
     border-color: #77bb00
 }
 

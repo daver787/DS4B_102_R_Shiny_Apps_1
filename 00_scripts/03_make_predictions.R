@@ -48,9 +48,15 @@ function(data, interactive = TRUE){
         facet_wrap(vars(frame_material)) +
         coord_flip() +
         scale_y_log10(labels = scales::dollar_format(accuracy = 1)) +
-        scale_color_manual(values=c("#000000","#77bb00")) +
+        scale_color_manual(values = c("#000000","#77bb00")) +
         theme_tq() +
-        theme(strip.text.x = element_text(margin = margin(5, 5, 5, 5)),strip.background = element_rect(fill ="#000000") ) +
+        theme(strip.text.x     = element_text(margin = margin(5, 5, 5, 5)), 
+              strip.background = element_rect(fill = "#000000"),
+              axis.text        = element_text(color = "black"),
+              axis.title       = element_text(color = "black"),
+              legend.text      = element_text(color = "black"),
+              legend.title     = element_text(color = "black")
+              ) +
         labs(title = "", x = "", y = "Log Scale")
     
     
