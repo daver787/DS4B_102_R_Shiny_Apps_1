@@ -38,7 +38,7 @@ library(RSQLite)
 
 # 2.0 Data ----
 con <- dbConnect(RSQLite::SQLite(), "../../00_data/bikes_database.db")
-# con <- dbConnect(RSQLite::SQLite(), "00_data/bikes_database.db")
+#con <- dbConnect(RSQLite::SQLite(), "00_data/bikes_database.db")
 # dbListTables(con)
 bikes_tbl <- tbl(con, "bikes") %>% collect()
 dbDisconnect(con)
@@ -176,13 +176,18 @@ renderTable({
 ```{r}
 renderImage({
     
-    #new_bike_tbl <- generate_new_bike("Beast of the East", "Mountain", "Cross Country Race", "Aluminum", .ml_model = model_xgboost)
+    #new_bike_tbl <- generate_new_bike("Bad Habit", "Mountain", "Cross Country Race", "Aluminum", .ml_model = model_xgboost)
     
     detect <- new_bike_tbl()%>%
         pull(model_base) %>%
         str_to_lower() %>%
         str_replace_all("-","_") %>%
-        str_replace_all(" ","_")
+        str_replace_all(" ","_") 
+       
+        
+        detect <- ifelse(detect %in% c("caad12","caad8"),
+            yes = detect,
+            no =  detect %>% str_remove_all("[[:digit:]]"))
     
     directory_files <-  fs::dir_ls("bike_img") 
         
