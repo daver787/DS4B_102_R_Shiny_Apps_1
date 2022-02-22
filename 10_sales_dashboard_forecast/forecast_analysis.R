@@ -49,7 +49,7 @@ dbDisconnect(con)
 # 3.0 TIME SERIES AGGREGATION ----
 
 # 3.1 DATA MANIPULATION ----
-time_unit <- "quarter"
+time_unit <- "year"
 
 time_plot_tbl <- processed_data_tbl %>%
     
@@ -67,6 +67,27 @@ time_plot_tbl
 # 3.2 FUNCTION ----
 
 # TODO - aggregate_time_series() 
+
+aggregate_time_series <- function(data, unit ="month"){
+    output_tbl <- data %>%
+        
+        mutate(date = floor_date(order.date, unit = unit)) %>%
+        
+        group_by(date) %>%
+        summarize(total_sales = sum(extended_price)) %>%
+        ungroup() %>%
+        
+        mutate(label_text = str_glue("Date: {date}
+                                 Revenue: {scales::dollar(total_sales)}"))
+    
+   return(output_tbl)
+    
+    
+}
+
+
+processed_data_tbl %>%
+    aggregate_time_series(time_unit = "day")
 
 
 
@@ -95,9 +116,30 @@ ggplotly(g, tooltip = "text")
 # 3.4 FUNCTION ----
 
 # TODO - MAKE FUNCTION 
+plot_time_series <- function(data){
+    data %>%
+        
+        ggplot(aes(date, total_sales)) +
+        
+        geom_line(color = "#2c3e50") +
+        geom_point(aes(text = label_text), color = "#2c3e50", size = 0.1) +
+        geom_smooth(method = "loess", span = 0.2) +
+        
+        theme_tq() +
+        expand_limits(y = 0) +
+        scale_y_continuous(labels = scales::dollar_format()) +
+        labs(x = "", y = "")
+    
+    ggplotly(g, tooltip = "text")
+    
+}
 
+processed_data_tbl %>%
+    aggregate_time_series(unit = "quarter") %>%
+    plot_time_series()
 
 # 4.0 FORECAST -----
+
 
 # 4.1 SETUP TRAINING DATA AND FUTURE DATA ----
 
