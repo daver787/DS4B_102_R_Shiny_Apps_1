@@ -43,13 +43,14 @@ processed_data_tbl <- processed_data_tbl %>%
     select(order.date, order.id, order.line, state, quantity, price,
            extended_price, category_1:frame_material, bikeshop.name)
 
+
 dbDisconnect(con)
 
 
 # 3.0 TIME SERIES AGGREGATION ----
 
 # 3.1 DATA MANIPULATION ----
-time_unit <- "year"
+#time_unit <- "year"
 
 time_plot_tbl <- processed_data_tbl %>%
     
@@ -68,10 +69,10 @@ time_plot_tbl
 
 # TODO - aggregate_time_series() 
 
-aggregate_time_series <- function(data, unit ="month"){
+aggregate_time_series <- function(data, time_unit ="month"){
     output_tbl <- data %>%
         
-        mutate(date = floor_date(order.date, unit = unit)) %>%
+        mutate(date = floor_date(order.date, unit = time_unit)) %>%
         
         group_by(date) %>%
         summarize(total_sales = sum(extended_price)) %>%
@@ -135,7 +136,7 @@ plot_time_series <- function(data){
 }
 
 processed_data_tbl %>%
-    aggregate_time_series(unit = "quarter") %>%
+    aggregate_time_series(time_unit = "quarter") %>%
     plot_time_series()
 
 # 4.0 FORECAST -----
@@ -144,6 +145,26 @@ processed_data_tbl %>%
 # 4.1 SETUP TRAINING DATA AND FUTURE DATA ----
 
 # TODO - timetk
+
+data <- processed_data_tbl %>%
+    aggregate_time_series(time_unit ="month")
+
+data %>%
+    tk_index() %>%
+    tk_get_timeseries_signature()
+
+
+data %>%
+    tk_index() %>%
+    tk_get_timeseries_summary()
+
+tk_get_timeseries_unit_frequency()
+
+data %>%
+    tk_get_timeseries_variables()
+
+data %>%
+    tk_augment_timeseries_signature()
 
 # 4.2 MACHINE LEARNING ----
 
