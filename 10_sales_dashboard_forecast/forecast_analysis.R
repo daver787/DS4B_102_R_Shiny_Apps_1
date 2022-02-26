@@ -147,7 +147,7 @@ processed_data_tbl %>%
 # TODO - timetk
 
 data <- processed_data_tbl %>%
-    aggregate_time_series(time_unit ="month")
+    aggregate_time_series(time_unit ="year")
 
 data %>%
     tk_index() %>%
@@ -225,22 +225,39 @@ generate_forecast <- function(data, n_future, seed = NULL){
         tk_make_future_timeseries(length_out = n_future, inspect_weekdays = TRUE, inspect_months = TRUE) %>%
         tk_get_timeseries_signature()
     
-    seed <- seed
-    set.seed(seed)
     
-    model_xgboost <- boost_tree(
-        mode           = "regression",
-        mtry           = 20, 
-        trees          = 500, 
-        min_n          = 3, 
-        tree_depth     = 8,
-        learn_rate     = 0.01, 
-        loss_reduction = 0.01) %>%
-        set_engine("xgboost") %>%
-        fit.model_spec(total_sales ~ ., data = train_tbl %>% select(-date, -label_text, -diff))
+   time_scale <-  data %>% 
+        tk_index() %>%
+        tk_get_timeseries_summary() %>%
+        pull(scale)
     
     
-    output_tbl <- predict(model_xgboost, new_data = future_data_tbl) %>%
+    if (time_scale == "year"){
+       model <-  linear_reg(mode = "regression") %>%
+            set_engine("lm") %>%
+            fit.model_spec(total_sales~., data = train_tbl %>% select(total_sales, index.num))
+        
+    }else {
+        
+        seed <- seed
+        set.seed(seed)
+        
+        model <- boost_tree(
+            mode           = "regression",
+            mtry           = 20, 
+            trees          = 500, 
+            min_n          = 3, 
+            tree_depth     = 8,
+            learn_rate     = 0.01, 
+            loss_reduction = 0.01) %>%
+            set_engine("xgboost") %>%
+            fit.model_spec(total_sales ~ ., data = train_tbl %>% select(-date, -label_text, -diff))
+        
+    }
+    
+    
+    
+    output_tbl <- predict(model, new_data = future_data_tbl) %>%
         bind_cols(future_data_tbl) %>%
         select(.pred, index) %>%
         rename(total_sales = .pred,
@@ -285,11 +302,7 @@ ggplotly(g,tooltip = "text")
 # TODO - plot_forecast()
 plot_forecast <- function(data){
    
-     data <- processed_data_tbl %>%
-        aggregate_time_series(time_unit = "month") %>%
-        generate_forecast(n_future = 12, seed = 123)
-    
-    g <- data %>%
+     g <- data %>%
         ggplot(aes(x = date, y = total_sales, color = key)) +
         geom_line() +
         geom_point(aes(text = label_text), size = 0.01) +
@@ -305,8 +318,8 @@ plot_forecast <- function(data){
 }
 
 processed_data_tbl %>%
-    aggregate_time_series(time_unit = "month") %>%
-    generate_forecast(n_future = 12, seed = 123) %>%
+    aggregate_time_series(time_unit = "year") %>%
+    generate_forecast(n_future = 2, seed = 123) %>%
     plot_forecast()
     
 

@@ -78,11 +78,7 @@ function(data, n_future, seed = NULL){
 plot_forecast <-
 function(data){
    
-     data <- processed_data_tbl %>%
-        aggregate_time_series(time_unit = "month") %>%
-        generate_forecast(n_future = 12, seed = 123)
-    
-    g <- data %>%
+     g <- data %>%
         ggplot(aes(x = date, y = total_sales, color = key)) +
         geom_line() +
         geom_point(aes(text = label_text), size = 0.01) +
