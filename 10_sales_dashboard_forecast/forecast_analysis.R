@@ -256,7 +256,6 @@ generate_forecast <- function(data, n_future, seed = NULL){
     }
     
     
-    
     output_tbl <- predict(model, new_data = future_data_tbl) %>%
         bind_cols(future_data_tbl) %>%
         select(.pred, index) %>%
@@ -281,8 +280,8 @@ generate_forecast <- function(data, n_future, seed = NULL){
 # TODO - plot
 
 data <- processed_data_tbl %>%
-    aggregate_time_series(time_unit = "month") %>%
-    generate_forecast(n_future = 12, seed = 123)
+    aggregate_time_series(time_unit = "year") %>%
+    generate_forecast(n_future = 2, seed = 123)
 
 g <- data %>%
     ggplot(aes(x = date, y = total_sales, color = key)) +
@@ -293,6 +292,7 @@ g <- data %>%
     scale_color_tq() +
     scale_y_continuous(labels = scales::dollar_format()) +
     labs(x = "", y = "")
+
 
 ggplotly(g,tooltip = "text")
     
