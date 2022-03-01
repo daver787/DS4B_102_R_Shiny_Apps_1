@@ -57,7 +57,7 @@ processed_data_tbl %>%
 
 # 3.1 XGBOOST ----
 
-source("10_sales_dashboard_forecast/model_forecast_xgb.R")
+source("10_sales_dashboard_forecast/trend_analysis/model_forecast_xgb.R")
 
 processed_data_tbl %>%
     aggregate_time_series("week") %>%
@@ -73,7 +73,7 @@ processed_data_tbl %>%
 
 # 3.2 GLMNET ----
 
-source("10_sales_dashboard_forecast/model_forecast_glmnet.R")
+source("10_sales_dashboard_forecast/trend_analysis/model_forecast_glmnet.R")
 
 processed_data_tbl %>%
     aggregate_time_series("week") %>%
