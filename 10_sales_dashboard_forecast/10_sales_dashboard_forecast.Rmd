@@ -20,10 +20,26 @@ library(tidyquant)
 # Interactive Visualizations
 library(plotly)
 
+#Modeling
+library(parsnip)
+library(timetk)
+
 # Database
 library(odbc)
 library(RSQLite)
+
 ```
+
+```{css}
+.bootstrap-switch, .bootstrap-switch-handle-on,
+.bootstrap-switch, .bootstrap-switch-handle-off,
+.bootstrap-switch, .bootstrap-switch-label {
+display: inline-block;
+vertical-align: baseline;
+}
+```
+
+
 
 ```{r}
 con <- dbConnect(RSQLite::SQLite(), "../00_data/bikes_database.db")
@@ -94,10 +110,29 @@ shinyWidgets::pickerInput(
     `selected-text-format` = "count > 3"
   )
 )
+#FORECAST MODE ----
+br()
+hr()
+br()
+
+h4("Forecast Mode")
+switchInput(inputId     = "forecast_mode",
+            value       = FALSE,
+            onStatus    = "success",
+            onLabel     = "On",
+            offLabel    = "Off",
+            handleWidth = 80, 
+            labelWidth  = 80,
+            inline      = TRUE,
+            width       = "150px"
+            )
+
+# APPLY BUTTONS ----
 
 br()
 hr()
 br()
+
 
 actionButton(inputId = "apply", label = "Apply", icon = icon("play"))
 
