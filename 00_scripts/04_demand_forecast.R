@@ -17,7 +17,7 @@ function(data, time_unit ="month"){
 }
 plot_time_series <-
 function(data){
-    data %>%
+    g <- data %>%
         
         ggplot(aes(date, total_sales)) +
         
