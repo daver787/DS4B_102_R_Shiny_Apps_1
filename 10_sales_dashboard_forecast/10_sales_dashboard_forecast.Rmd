@@ -67,7 +67,7 @@ processed_data_tbl <- processed_data_tbl %>%
              sep = " - ") %>%
     
     select(order.date, order.id, order.line, state, quantity, price,
-           extended_price, category_1:frame_material)
+           extended_price, category_1:frame_material, bikeshop.name)
     
 # processed_data_tbl
 
@@ -112,6 +112,20 @@ shinyWidgets::pickerInput(
     `selected-text-format` = "count > 3"
   )
 )
+
+shinyWidgets::pickerInput(
+    inputId  = "picker_bikeshop_name",
+    label    = h4("Bike Shop (Customer)"),
+    choices  = unique(processed_data_tbl$bikeshop.name),
+    selected = unique(processed_data_tbl$bikeshop.name),
+    multiple = TRUE,
+    options  = list(
+    `actions-box`          = TRUE,
+    size                   = 10,
+    `selected-text-format` = "count > 3"
+)
+)
+
 #FORECAST MODE ----
 br()
 hr()
@@ -260,10 +274,14 @@ renderValueBox({
 renderValueBox({
   
   valueBox(
-    value   = summary_values_tbl()$wealth_metric, 
+    value   = summary_values_tbl()$wealth_metric %>% scales::dollar(scale = 1e-6, suffix = "M", accuracy = 0.1), 
     caption = "Sales", 
     icon    = "fa-money-check-alt", 
-    color   = "primary")
+    color   = case_when(
+        summary_values_tbl()$wealth_metric < 5e6  ~ "danger",
+        summary_values_tbl()$wealth_metric < 10e6 ~ "warning",
+        TRUE                                      ~"success"
+    ))
   
 })
 ```
@@ -278,7 +296,12 @@ renderValueBox({
     value   = summary_values_tbl()$wise_metric, 
     caption = "Ratio, Mountain to Road", 
     icon    = "fa-brain", 
-    color   = "info")
+    color   = case_when(
+        summary_values_tbl()$wise_metric < 0.5 ~ "warning",
+        summary_values_tbl()$wise_metric < 2.0 ~ "success",
+        TRUE                                   ~ "warning"
+        
+    ))
   
 })
 ```
