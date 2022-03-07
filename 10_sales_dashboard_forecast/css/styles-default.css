@@ -32,6 +32,14 @@ body {
     background-color: #dddddd;
 }
 
+#dashboard-container{
+    padding-left: 350px !important;
+}
+
+.sidebar{
+    width:350px !important;
+}
+
 /* BUTTONS */
 .btn-default {
     color: #ffffff;
