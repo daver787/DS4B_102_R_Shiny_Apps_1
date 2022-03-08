@@ -383,7 +383,7 @@ shinyWidgets::radioGroupButtons(
   label    = "Time Unit", 
   choices  = c("D" = "day", "W" = "week", "M" = "month", "Q" = "quarter", "Y" = "year"), 
   selected = "month", 
-  status   = "primary", 
+  status   = "success", 
   justified = TRUE, 
   checkIcon = list(
     yes = icon("ok", lib = "glyphicon"), 

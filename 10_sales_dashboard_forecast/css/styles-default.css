@@ -40,6 +40,14 @@ body {
     width:350px !important;
 }
 
+/*SWITCH*/
+.bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-success, .bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-success {
+    background: #18bc9c;
+    color: #fff;
+}
+
+
+
 /* BUTTONS */
 .btn-default {
     color: #ffffff;
@@ -84,3 +92,34 @@ body {
     color: #222222;
     background-color: #ffffff
 }
+
+.btn-success {
+    color: #ffffff;
+    background-color: #18bc9c;
+    border-color: #18bc9c
+}
+
+.btn-success:focus,.btn-success.focus {
+    color: #ffffff;
+    background-color: #16ab8e;
+    border-color: #16ab8e
+}
+
+.btn-success:hover {
+    color: #ffffff;
+    background-color: #16ab8e;
+    border-color: #16ab8e
+}
+
+.btn-success:active,.btn-success.active,.open>.dropdown-toggle.btn-success {
+    color: #ffffff;
+    background-color: #16ab8e;
+    border-color: #16ab8e
+}
+
+.btn-success:active:hover,.btn-success.active:hover,.open>.dropdown-toggle.btn-success:hover,.btn-success:active:focus,.btn-success.active:focus,.open>.dropdown-toggle.btn-success:focus,.btn-success:active.focus,.btn-success.active.focus,.open>.dropdown-toggle.btn-success.focus {
+    color: #ffffff;
+    background-color: #16ab8e;
+    border-color: #16ab8e
+}
+
