@@ -32,13 +32,28 @@ body {
     background-color: #dddddd;
 }
 
-#dashboard-container{
-    padding-left: 350px !important;
+
+@media screen and (min-width: 767px){
+    #dashboard-container{
+        padding-left: 350px !important;
+    }   
+
+
+    .sidebar{
+        width:350px !important;
+    }
+
+
 }
 
-.sidebar{
-    width:350px !important;
+@media screen and (max-width: 767px){
+    .chart-shim{
+        overflow-y: scroll;
+    }
+
 }
+
+
 
 /*SWITCH*/
 .bootstrap-switch .bootstrap-switch-handle-on.bootstrap-switch-success, .bootstrap-switch .bootstrap-switch-handle-off.bootstrap-switch-success {
@@ -123,3 +138,14 @@ body {
     border-color: #16ab8e
 }
 
+.bg-success{
+    background-color: #18bc9c;
+}
+
+.bg-danger{
+    background-color: #E31A1C;
+}
+
+.bg-warning{
+    background-color: #FF7F00;
+}
