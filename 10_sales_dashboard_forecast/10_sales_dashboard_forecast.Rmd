@@ -43,6 +43,16 @@ vertical-align: baseline;
 }
 ```
 
+```{r}
+renderUI({
+   if (input$view_mode){
+      includeCSS("css/styles-default.css")
+   } else{
+        includeCSS("css/styles-dark.css")
+   }
+})
+
+```
 
 
 ```{r}
@@ -137,6 +147,7 @@ h4("Forecast Mode")
 switchInput(inputId     = "forecast_mode",
             value       = FALSE,
             onStatus    = "success",
+            offStatus   = "primary", 
             onLabel     = "On",
             offLabel    = "Off",
             handleWidth = 80, 
@@ -210,6 +221,22 @@ observeEvent(eventExpr = input$reset, handlerExpr = {
  
   
 })
+# View Mode ----
+br()
+hr()
+br()
+h5("View Mode")
+switchInput(inputId     = "view_mode",
+            value       = TRUE,
+            onStatus    = "success",
+            offStatus   = "primary",
+            onLabel     = "Light",
+            offLabel    = "Dark",
+            handleWidth = 80, 
+            labelWidth  = 80,
+            inline      = TRUE,
+            width       = "150px"
+            )
 
 # renderPrint(input$date_range)
 
