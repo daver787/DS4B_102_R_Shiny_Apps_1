@@ -8,18 +8,17 @@
 
 h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
     font-family: "Montserrat", sans-serif;
-    color:#FFFFFF;
+    color: #2c3e50;
 }
 
 body {
     font-family: 'Roboto', sans-serif;
     color: #2c3e50;
-    background-color: #090909;
 }
 
 /* NAVBAR */
 .navbar-inverse {
-    background-color: #18bc9c;
+    background-color: #2c3e50;
     border-color: #fff;
 }
 
@@ -30,7 +29,7 @@ body {
 
 /* SIDEBAR */
 .section.sidebar {
-    background-color: #090909;
+    background-color: #dddddd;
 }
 
 
@@ -50,9 +49,6 @@ body {
 @media screen and (max-width: 767px){
     .chart-shim{
         overflow-y: scroll;
-    }
-    .level3:first-child{
-        background-color: #090909;
     }
 
 }
